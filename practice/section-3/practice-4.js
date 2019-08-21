@@ -1,25 +1,28 @@
 'use strict';
 
 function createUpdatedCollection(collectionA, objectB) {
-
-  var result = [];
-  var map = new Map();
-  for (var i=0;i<collectionA.length;i++){
-    if(collectionA[i].length>1){
-      map.set(collectionA[i].charAt(0),collectionA[i].charAt(2));
-    }
-    else if (map.get(collectionA[i])==null){
-      map.set(collectionA[i],1);
+  var result=new Array();
+  var countElements={};
+  for(var i=0;i<collectionA.length;i++){
+    if(collectionA[i].replace(/[0-9a-z]/ig,"") != ""){
+      let argChar=collectionA[i].replace(/[^a-z]/ig,"");
+      let argNum=parseInt(collectionA[i].replace(/[^0-9]/ig,""));
+      if(argChar in countElements){
+        countElements[argChar]+=argNum;
+      }else{
+        countElements[argChar]=argNum;
+      }
     }else{
-      map.set(collectionA[i],map.get(collectionA[i])+1);
+      if(collectionA[i] in countElements){
+        countElements[collectionA[i]]++;
+      }else{
+        countElements[collectionA[i]]=1;
+      }
     }
   }
-  //console.log(map);
-  map.forEach(function(key,value){
-    result.push({key:value,count:key})
-  });
-  console.log(result);
-
+  for(var Key in countElements){
+		result.push({key:Key,count:countElements[Key]})
+	}
 
   var  collectionB = objectB.value;
   for (var i = 0;i < result.length;i++)

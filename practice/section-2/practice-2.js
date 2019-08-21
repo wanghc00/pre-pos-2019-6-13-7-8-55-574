@@ -1,40 +1,27 @@
 'use strict';
 
 function countSameElements(collection) {
-  var myArray=new Array();
-	var myObject={};
-	var findObj=0;
-	for(var i=0;i<collection.length;i++){
+  var result=new Array();
+  var countElements={};
+  for(var i=0;i<collection.length;i++){
     if(collection[i].indexOf("-") != -1){
-      var arr=collection[i].split("-");
-      for(var key in myObject){
-        findObj=0;
-        if(key==arr[0]){
-          myObject[key]+=parseInt(arr[1]);
-          findObj=1;
-          break;
-        }
-      }
-      if(findObj==0){
-        myObject[arr[0]]=parseInt(arr[1]);
+      let argChar=collection[i].replace(/[^a-z]/ig,"");
+      let argNum=parseInt(collection[i].replace(/[^0-9]/ig,""));
+      if(argChar in countElements){
+        countElements[argChar]+=argNum;
+      }else{
+        countElements[argChar]=argNum;
       }
     }else{
-      for(var key in myObject){
-        findObj=0;
-        if(key==collection[i]){
-          myObject[key]++;
-          findObj=1;
-          break;
-        }
+      if(collection[i] in countElements){
+        countElements[collection[i]]++;
+      }else{
+        countElements[collection[i]]=1;
       }
-      if(findObj==0){
-        myObject[collection[i]]=1;
-      }
-    }	
+    }
   }
-
-	for(var myKey in myObject){
-		myArray.push({key:myKey,count:myObject[myKey]})
+  for(var Key in countElements){
+		result.push({key:Key,count:countElements[Key]})
 	}
-	return myArray;
+	return result;
 }
